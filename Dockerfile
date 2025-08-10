@@ -1,4 +1,4 @@
-FROM httpd:2.4.43-alpine
+FROM httpd:2.4.65-alpine
 
 # These variables are inherited from the httpd:alpine image:
 # ENV HTTPD_PREFIX /usr/local/apache2
@@ -16,26 +16,26 @@ RUN set -ex; \
     \
     # Enable DAV modules.
     for i in dav dav_fs; do \
-        sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
+    sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
     done; \
     \
     # Make sure authentication modules are enabled.
     for i in authn_core authn_file authz_core authz_user auth_basic auth_digest; do \
-        sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
+    sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
     done; \
     \
     # Make sure other modules are enabled.
     for i in alias headers include mime setenvif; do \
-        sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
+    sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
     done; \
     \
     # Enable Icons
     sed -i '/httpd-autoindex.conf/s/^#//' conf/httpd.conf; \
     # Include enabled configs and sites.
     printf '%s\n' "Include conf/conf-enabled/*.conf" \
-        >> "conf/httpd.conf"; \
+    >> "conf/httpd.conf"; \
     printf '%s\n' "Include conf/sites-enabled/*.conf" \
-        >> "conf/httpd.conf"; \
+    >> "conf/httpd.conf"; \
     \
     # Enable dav and default site.
     mkdir -p "conf/conf-enabled"; \
