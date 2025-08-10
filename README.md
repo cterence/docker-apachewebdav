@@ -12,7 +12,7 @@ This image is based on [apachewebdav/apachewebdav](https://github.com/mgutt/dock
 
 As well as some quality of life improvements:
 
-- Setting `NO_CHOWN` env variable to any value will skip running `chown` commands when starting the server
+- Setting `NO_CHOWN_DATA` env variable to any value will skip running `chown` commands when starting the server
 - A `/health` unauthenticated healthcheck route that returns 204, useful for Kubernetes probes
 
 ## Usage
@@ -99,4 +99,4 @@ All environment variables are optional. You probably want to at least specify `U
 - **`PUID`**: file owner's UID of `/var/lib/dav/data`
 - **`PGID`**: file owner's GID of `/var/lib/dav/data`
 - **`PUMASK`**: umask of `/var/lib/dav/data`
-- **`NO_CHOWN`**: disables `chown $PUID:$PGID` commands in the entrypoint (useful for mounting a readonly data volume)
+- **`NO_CHOWN_DATA`**: disables `chown $PUID:$PGID` commands in the entrypoint (useful for mounting a readonly data volume)

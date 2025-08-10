@@ -117,10 +117,10 @@ sed -i -e "s|^Group .*|Group #$PGID|" "$HTTPD_PREFIX/conf/httpd.conf";
 [ ! -e "/var/lib/dav/DavLock" ] && touch "/var/lib/dav/DavLock"
 
 # Do not set permissions.
-if [ "x$NO_CHOWN" = "x" ]; then
+if [ "x$NO_CHOWN_DATA" = "x" ]; then
 chown $PUID:$PGID "/var/lib/dav/data"
-chown $PUID:$PGID "/var/lib/dav/DavLock"
 fi
+chown $PUID:$PGID "/var/lib/dav/DavLock"
 
 # Set umask
 if [ "x$PUMASK" != "x" ]; then
