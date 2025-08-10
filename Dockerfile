@@ -15,7 +15,7 @@ RUN set -ex; \
     touch "/var/lib/dav/DavLock"; \
     \
     # Enable DAV modules.
-    for i in dav dav_fs; do \
+    for i in dav dav_fs dav_lock dbd; do \
     sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
     done; \
     \
