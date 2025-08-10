@@ -14,6 +14,9 @@ As well as some quality of life improvements:
 
 - Setting `NO_CHOWN_DATA` env variable to any value will skip running `chown` commands when starting the server
 - A `/health` unauthenticated healthcheck route that returns 204, useful for Kubernetes probes
+- Migrated from the original alpine image to a debian image for multiple reasons:
+  - Since Alpine 3.13, a necessary package for WebDav locking was removed, see [this issue](https://gitlab.alpinelinux.org/alpine/aports/-/issues/13112) for more details
+  - The previous image version (`2.4.43-alpine`) was old and has [CVE-2021-40438](https://nvd.nist.gov/vuln/detail/cve-2021-40438)
 
 ## Usage
 
