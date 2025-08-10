@@ -13,6 +13,7 @@ set -e
 #   PUID
 #   PGID
 #   PUMASK
+#   READONLY
 
 # Just in case this environment variable has gone missing.
 HTTPD_PREFIX="${HTTPD_PREFIX:-/usr/local/apache2}"
@@ -108,14 +109,18 @@ addgroup -g $PGID -S user-group 1>/dev/null || true
 adduser -u $PUID -S user 1>/dev/null || true
 
 # Run httpd as PUID:PGID
-sed -i -e "s|^User .*|User #$PUID|" "$HTTPD_PREFIX/conf/httpd.conf"; 
-sed -i -e "s|^Group .*|Group #$PGID|" "$HTTPD_PREFIX/conf/httpd.conf"; 
+sed -i -e "s|^User .*|User #$PUID|" "$HTTPD_PREFIX/conf/httpd.conf";
+sed -i -e "s|^Group .*|Group #$PGID|" "$HTTPD_PREFIX/conf/httpd.conf";
 
 # Create directories for Dav data and lock database.
 [ ! -d "/var/lib/dav/data" ] && mkdir -p "/var/lib/dav/data"
 [ ! -e "/var/lib/dav/DavLock" ] && touch "/var/lib/dav/DavLock"
+
+# Do not set permissions.
+if [ "x$NO_CHOWN" == "x" ]; then
 chown $PUID:$PGID "/var/lib/dav/data"
 chown $PUID:$PGID "/var/lib/dav/DavLock"
+fi
 
 # Set umask
 if [ "x$PUMASK" != "x" ]; then
