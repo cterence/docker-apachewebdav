@@ -105,8 +105,8 @@ if [ -e /privkey.pem ] && [ -e /cert.pem ]; then
 fi
 
 # add PUID:PGID, ignore error
-addgroup -g $PGID -S user-group 1>/dev/null || true
-adduser -u $PUID -S user 1>/dev/null || true
+groupadd -g "$PGID" user-group 2>/dev/null || true
+useradd -u "$PUID" -g "$PGID" -M -d /nonexistent -s /usr/sbin/nologin user || true
 
 # Run httpd as PUID:PGID
 sed -i -e "s|^User .*|User #$PUID|" "$HTTPD_PREFIX/conf/httpd.conf";
@@ -117,7 +117,7 @@ sed -i -e "s|^Group .*|Group #$PGID|" "$HTTPD_PREFIX/conf/httpd.conf";
 [ ! -e "/var/lib/dav/DavLock" ] && touch "/var/lib/dav/DavLock"
 
 # Do not set permissions.
-if [ "x$NO_CHOWN" == "x" ]; then
+if [ "x$NO_CHOWN" = "x" ]; then
 chown $PUID:$PGID "/var/lib/dav/data"
 chown $PUID:$PGID "/var/lib/dav/DavLock"
 fi

@@ -1,4 +1,4 @@
-FROM httpd:2.4.65-alpine
+FROM httpd:2.4.65-bookworm
 
 # These variables are inherited from the httpd:alpine image:
 # ENV HTTPD_PREFIX /usr/local/apache2
@@ -15,7 +15,7 @@ RUN set -ex; \
     touch "/var/lib/dav/DavLock"; \
     \
     # Enable DAV modules.
-    for i in dav dav_fs dav_lock dbd; do \
+    for i in dav dav_fs; do \
     sed -i -e "/^#LoadModule ${i}_module.*/s/^#//" "conf/httpd.conf"; \
     done; \
     \
@@ -41,9 +41,8 @@ RUN set -ex; \
     mkdir -p "conf/conf-enabled"; \
     mkdir -p "conf/sites-enabled"; \
     ln -s ../conf-available/dav.conf "conf/conf-enabled"; \
-    ln -s ../sites-available/default.conf "conf/sites-enabled"; \
-    # Install openssl if we need to generate a self-signed certificate.
-    apk add --no-cache openssl
+    ln -s ../sites-available/default.conf "conf/sites-enabled";
+# Install openssl if we need to generate a self-signed certificate.
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 EXPOSE 80/tcp 443/tcp
